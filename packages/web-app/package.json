@@ -1,5 +1,5 @@
 {
-  "name": "bedrock-dialogue-graph-web-app",
+  "name": "@workspace/web-app",
   "version": "0.0.0",
   "private": true,
   "type": "module",

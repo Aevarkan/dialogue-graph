@@ -1,11 +1,11 @@
 {
-  "name": "bedrock-dialogue-graph",
+  "name": "@workspace/root",
   "version": "0.0.0",
   "private": true,
   "author": "Aevarkan",
   "license": "GPL-3.0-only",
   "scripts": {
     "build": "pnpm -r run build",
-    "dev:webapp": "pnpm --filter bedrock-dialogue-graph-web-app dev"
+    "dev:webapp": "pnpm --filter @workspace/web-app dev"
   }
 }
