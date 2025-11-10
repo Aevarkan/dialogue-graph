@@ -3,7 +3,9 @@
 
 import { markRaw } from "vue";
 import SceneNode from "./SceneNode.vue";
+import ButtonSlotNode from "./ButtonSlotNode.vue";
 
 export const nodeTypes = {
-  scene: markRaw(SceneNode)
+  scene: markRaw(SceneNode),
+  buttonSlot: markRaw(ButtonSlotNode)
 }
