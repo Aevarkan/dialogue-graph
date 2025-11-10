@@ -6,6 +6,7 @@ import { ControlButton, Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import { initialEdges, initialNodes } from './initial-elements.js'
 import { Moon, RotateCcw, Sun } from 'lucide-vue-next'
+import { nodeTypes } from '@/components/index.js'
 
 /**
  * `useVueFlow` provides:
@@ -97,6 +98,7 @@ function toggleDarkMode() {
   <VueFlow
     style="width: 100%; height: 100%;"
     :nodes="nodes"
+    :node-types="nodeTypes"
     :edges="edges"
     :class="{ dark }"
     :default-viewport="{ zoom: 1.5 }"
