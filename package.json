@@ -7,5 +7,9 @@
   "scripts": {
     "build": "pnpm -r run build",
     "dev:webapp": "pnpm --filter @workspace/web-app dev"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "vitest": "^4.0.8"
   }
 }
