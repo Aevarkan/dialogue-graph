@@ -1,16 +1,31 @@
 {
-  "name": "@workspace/extension",
+  "name": "bedrock-visual-dialogue-editor",
+  "version": "0.0.1",
   "private": true,
   "author": "Aevarkan",
   "license": "GPL-3.0-only",
   "displayName": "Bedrock Visual Dialogue Editor",
+  "type": "commonjs",
+  "scripts": {
+    "compile": "tsdown",
+    "package": "vsce package -o bedrock-visual-dialogue-editor.vsix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aevarkan/dialogue-graph"
+  },
   "engines": {
     "vscode": "^1.105.0"
   },
+  "main": "./dist/extension.cjs",
   "activationEvents": [],
   "contributes": {},
   "categories": [
     "Other",
     "Visualization"
-  ]
+  ],
+  "devDependencies": {
+    "@vscode/vsce": "^3.7.0",
+    "tsdown": "^0.16.1"
+  }
 }

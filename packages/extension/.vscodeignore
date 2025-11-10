@@ -1,0 +1,12 @@
+# IGNORE EVERYTHING
+*
+
+# essentials
+!package.json
+!LICENSE
+!dist/
+!dist/**
+
+# ignore src completely
+src/
+src/**

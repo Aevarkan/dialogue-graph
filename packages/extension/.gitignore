@@ -11,5 +11,7 @@
 !LICENSE
 !README.md
 !package.json
+!.vscodeignore
 
+!tsdown.config.ts
 !tsconfig.json
