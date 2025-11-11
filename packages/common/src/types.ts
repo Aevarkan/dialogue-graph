@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Aevarkan
 // Licensed under the GPLv3 license
 
+import { SceneMessage } from "./messages"
+
 /**
  * Represents an NPC dialogue scene.
  */
@@ -58,3 +60,14 @@ export interface Button {
  * Maximum number of buttons per scene.
  */
 export const SCENE_MAX_BUTTONS = 6
+
+/**
+ * An object that can send messages back and forth between extension and webview.
+ */
+export interface MessageSender {
+  /**
+   * Sends the message.
+   * @param message 
+   */
+  sendMessage(message: SceneMessage): void
+}
