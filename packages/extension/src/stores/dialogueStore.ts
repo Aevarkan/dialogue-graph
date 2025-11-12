@@ -7,6 +7,10 @@ import { DialogueStoreDeleteMessage, DialogueStoreGenericMessage, StoreUpdateSou
 
 class DialogueStore {
   private dialogueMap = new Map<string, Scene>()
+  /**
+   * Array of `sceneId`s. This is not a normal string, it is `scene_tag` in `json`.
+   */
+  private sceneTagOrder: string[] = []
   
   private listeners = {
     onSceneCreate: [] as ((storeMessage: DialogueStoreGenericMessage) => void)[],
@@ -24,6 +28,33 @@ class DialogueStore {
 
   public onSceneDelete(callback: (storeMessage: DialogueStoreDeleteMessage) => void) {
     this.listeners.onSceneDelete.push(callback)
+  }
+
+  /**
+   * Resets the scenes for the store, resetting the order.
+   * @param source The source of the information.
+   * @param scenes The new complete scene array.
+   */
+  public setScenes(source: StoreUpdateSource, scenes: Scene[]) {
+
+    // new scenes
+    const newOrder: string[] = []
+    for (const scene of scenes) {
+      newOrder.push(scene.sceneId)
+      this.upsertScene(source, scene)
+    }
+    // and set this to be the correct order (so the extension doesn't switch around the file structure)
+    this.sceneTagOrder = newOrder
+
+    const newIdSet = new Set(newOrder)
+    
+    // delete any scenes which are not in the new array, as this resets the store
+    for (const [sceneTag] of this.dialogueMap) {
+      const existsInBoth = (newIdSet.has(sceneTag))
+      if (!existsInBoth) {
+        this.deleteScene(source, sceneTag)
+      }
+    }
   }
 
   /**
