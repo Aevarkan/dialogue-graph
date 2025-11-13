@@ -4,6 +4,8 @@
 # directories
 !src/
 !src/**
+!scripts/
+!scripts/**
 
 # files
 !.gitignore

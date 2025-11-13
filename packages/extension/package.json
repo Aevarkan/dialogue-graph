@@ -8,7 +8,8 @@
   "type": "commonjs",
   "scripts": {
     "compile": "tsdown",
-    "package": "vsce package -o bedrock-visual-dialogue-editor.vsix"
+    "package": "vsce package -o bedrock-visual-dialogue-editor.vsix",
+    "copy-media": "node scripts/copy-app-media-files.cjs"
   },
   "repository": {
     "type": "git",
