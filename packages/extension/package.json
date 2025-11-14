@@ -19,7 +19,9 @@
     "vscode": "^1.105.0"
   },
   "main": "./dist/extension.cjs",
-  "activationEvents": [],
+  "activationEvents": [
+    "*"
+  ],
   "contributes": {
     "configuration": {
       "title": "Bedrock Dialogue Editor",
@@ -30,7 +32,19 @@
           "description": "Automatically open dialogue files in the visual editor."
         }
       }
-    }
+    },
+    "customEditors": [
+      {
+        "viewType": "bedrockDialogueEditor.graphEditor",
+        "displayName": "Graph Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.json",
+            "language": "json"
+          }
+        ]
+      }
+    ]
   },
   "categories": [
     "Other",
