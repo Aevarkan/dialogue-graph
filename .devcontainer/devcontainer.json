@@ -1,0 +1,7 @@
+{
+  "name": "Extension Environment",
+  "workspaceFolder": "/workspace",
+  "build": {
+    "dockerfile": "Dockerfile"
+  }
+}
