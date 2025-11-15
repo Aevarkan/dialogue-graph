@@ -3,5 +3,6 @@
   "workspaceFolder": "/workspaces/dialogue-graph",
   "build": {
     "dockerfile": "Dockerfile"
-  }
+  },
+  "postStartCommand": "pnpm install"
 }
