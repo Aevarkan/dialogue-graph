@@ -10,10 +10,16 @@ let vscodeApi: VsCodeApi | null = null
 
 function getVsCodeApi(): VsCodeApi | null {
   if (!vscodeApi) {
-    // @ts-expect-error this only works in the VSCode webview container
-    const checkApi = acquireVsCodeApi() as VsCodeApi | undefined
-    if (checkApi) {
+    try {
+      // @ts-expect-error this only works in the VSCode webview container
+      const checkApi = acquireVsCodeApi() as VsCodeApi | undefined
+      if (!checkApi) {
+        throw new Error()
+      }
       vscodeApi = checkApi
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      return null
     }
   }
   return vscodeApi
