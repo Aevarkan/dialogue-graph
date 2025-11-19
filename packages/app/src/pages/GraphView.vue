@@ -7,8 +7,11 @@ import { MiniMap } from '@vue-flow/minimap'
 import { Moon, RotateCcw, Sun } from 'lucide-vue-next'
 import { nodeTypes } from '@/components/index.js'
 import { useDialogueData } from '@/composables/dialogueData.js'
+import { useVsCode } from '@/composables/vscodeMessages'
+import type { ReadyMessage } from '@workspace/common'
 
 const { createScene, deleteScene, onSceneCreate, onSceneDelete, onSceneUpdate, onSlotUpdate, updateScene } = useDialogueData()
+const { inWebview, postMessage } = useVsCode()
 
 const { onInit, onNodeDragStop, onConnect, addEdges, setViewport, addNodes, updateNodeData, removeNodes, findNode } = useVueFlow()
 
@@ -54,15 +57,17 @@ onSceneDelete((sceneId) => {
 // our dark mode toggle flag
 const dark = ref(false)
 
-/**
- * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
- * Any event that is available as `@event-name` on the VueFlow component is also available as `onEventName` on the composable and vice versa
- *
- * onInit is called when the VueFlow viewport is initialized
- */
 onInit((vueFlowInstance) => {
   // instance is the same as the return of `useVueFlow`
   vueFlowInstance.fitView()
+  console.log("In webview: ", inWebview())
+  if (inWebview()) {
+    const readyMessage: ReadyMessage = {
+      messageType: "ready",
+      isReadyStatus: true
+    }
+    postMessage(readyMessage)
+  }
 })
 
 /**
