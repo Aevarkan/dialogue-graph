@@ -4,6 +4,7 @@
 import { Scene } from "./types"
 
 export type SceneMessage = GenericSceneMessage | DeleteSceneMessage
+export type GenericMessage = SceneMessage | ReadyMessage
 
 interface BaseMessage {
   /**
@@ -25,4 +26,12 @@ export interface GenericSceneMessage extends BaseMessage {
 
 export interface DeleteSceneMessage extends BaseMessage {
   messageType: "deleteScene"
+}
+
+export interface ReadyMessage {
+  /**
+   * Is ready.
+   */
+  isReadyStatus: boolean
+  messageType: "ready"
 }
