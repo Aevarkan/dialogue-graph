@@ -9,6 +9,9 @@
 !media/
 !media/**
 
+# localisation
+!package.nls.json
+
 # ignore src completely
 src/
 src/**

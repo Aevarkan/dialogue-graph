@@ -4,7 +4,7 @@
   "private": true,
   "author": "Aevarkan",
   "license": "GPL-3.0-only",
-  "displayName": "Bedrock Visual Dialogue Editor",
+  "displayName": "%bedrockDialogueEditor.displayName%",
   "type": "commonjs",
   "scripts": {
     "copy-media": "node scripts/copy-app-media-files.cjs",
@@ -27,8 +27,8 @@
     "commands": [
       {
         "command": "bedrockDialogueEditor.openGraphEditor",
-        "title": "Open Dialogue Edior",
-        "category": "Visual"
+        "title": "%bedrockDialogueEditor.openGraphEditor%",
+        "category": "%bedrockDialogueEditor.category%"
       }
     ],
     "menus": {
@@ -40,25 +40,28 @@
       ]
     },
     "configuration": {
-      "title": "Bedrock Dialogue Editor",
+      "title": "%bedrockDialogueEditor.name%",
       "properties": {
         "bedrockDialogueEditor.autoOpen": {
+          "title": "%bedrockDialogueEditor.autoOpen.title%",
+          "description": "%bedrockDialogueEditor.autoOpen.desc%",
           "type": "boolean",
-          "default": false,
-          "description": "Automatically open dialogue files in the visual editor."
+          "default": false
         },
         "bedrockDialogueEditor.switchFocusOnOpen": {
+          "title": "%bedrockDialogueEditor.switchFocusOnOpen.title%",
+          "markdownDescription": "%bedrockDialogueEditor.switchFocusOnOpen.desc%",
           "type": "boolean",
-          "default": true,
-          "markdownDescription": "Switch focus to the dialogue editor tab when opening.\n\nThis only has an effect if `editorOpenLocation` is set to `beside`."
+          "default": true
         },
         "bedrockDialogueEditor.editorOpenLocation": {
+          "title": "%bedrockDialogueEditor.editorOpenLocation.title%",
+          "markdownDescription": "%bedrockDialogueEditor.editorOpenLocation.desc%",
           "type": "string",
-          "markdownDescription": "The column that the dialogue editor should open in when called from `openGraphEditor`.",
           "enum": ["active", "beside"],
           "markdownEnumDescriptions": [
-            "The dialogue editor opens in the *active* view column.",
-            "The dialogue editor opens in the view column *next* to the active one."
+            "%bedrockDialogueEditor.editorOpenLocation.active.desc%",
+            "%bedrockDialogueEditor.editorOpenLocation.beside.desc%"
           ],
           "default": "beside"
         }
@@ -67,7 +70,7 @@
     "customEditors": [
       {
         "viewType": "bedrockDialogueEditor.graphEditor",
-        "displayName": "Graph Editor",
+        "displayName": "%bedrockDialogueEditor.graphEditor.displayName%",
         "selector": [
           {
             "filenamePattern": "*.json",

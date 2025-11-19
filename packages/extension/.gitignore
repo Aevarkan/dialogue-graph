@@ -17,3 +17,6 @@
 
 !tsdown.config.mjs
 !tsconfig.json
+
+# localisation
+!package.nls.json
