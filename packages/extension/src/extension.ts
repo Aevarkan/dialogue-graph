@@ -2,7 +2,7 @@
 // Licensed under the GPLv3 license
 
 import * as vscode from 'vscode';
-import { VisualDialogueEditor } from './VisualDialogueEditor';
+import { DialogueEditor } from './classes/DialogueEditor';
 import { Command } from './classes/Command';
 // import { setContext } from './stores/contextStore';
 
@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
   // setContext(context)
   console.log('Extension activated!');
 
-  const editorDisposable = VisualDialogueEditor.register(context)
+  const editorDisposable = DialogueEditor.register(context)
   context.subscriptions.push(editorDisposable)
 
   const openDialogueEditorCommand = Command.registerOpenDialogueEditor()

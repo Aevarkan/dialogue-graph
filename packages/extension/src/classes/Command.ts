@@ -3,7 +3,7 @@
 
 import { commands, TextDocumentShowOptions, TextEditor, ViewColumn, workspace } from "vscode";
 import { EXTENSION_NAME } from "../constants";
-import { VisualDialogueEditor } from "../VisualDialogueEditor";
+import { DialogueEditor } from "./DialogueEditor";
 
 export class Command {
 
@@ -36,7 +36,7 @@ export class Command {
       commands.executeCommand(
         "vscode.openWith",
         textEditor.document.uri,
-        VisualDialogueEditor.viewType,
+        DialogueEditor.viewType,
         openOptions
       )
 

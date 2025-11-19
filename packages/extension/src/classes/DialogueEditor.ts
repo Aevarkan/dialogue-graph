@@ -1,11 +1,14 @@
+// Copyright (c) 2025 Aevarkan
+// Licensed under the GPLv3 license
+
 import { CancellationToken, CustomTextEditorProvider, Disposable, ExtensionContext, TextDocument, WebviewPanel, window, workspace } from 'vscode';
-import { fromDialogue, parseRawDialogue } from './helpers/dialogueParser';
-import dialogueStore from './stores/dialogueStore';
-import { StoreUpdateSource } from './storeMessages';
-import { getWebviewContent } from './helpers/webviewHelper';
+import { fromDialogue, parseRawDialogue } from '../helpers/dialogueParser';
+import dialogueStore from '../stores/dialogueStore';
+import { StoreUpdateSource } from '../storeMessages';
+import { getWebviewContent } from '../helpers/webviewHelper';
 
 
-export class VisualDialogueEditor implements CustomTextEditorProvider {
+export class DialogueEditor implements CustomTextEditorProvider {
   
   /**
    * Register the provider for this extension.
@@ -13,7 +16,7 @@ export class VisualDialogueEditor implements CustomTextEditorProvider {
    * @returns The disposable for the registration.
    */
   public static register(context: ExtensionContext): Disposable {
-    const providerInstance = new VisualDialogueEditor(context)
+    const providerInstance = new DialogueEditor(context)
     const registrationDisposable = window.registerCustomEditorProvider(this.viewType, providerInstance)
     return registrationDisposable
   }
