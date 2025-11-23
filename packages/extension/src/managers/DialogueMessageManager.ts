@@ -6,9 +6,10 @@ import { DialogueStore } from "../stores/dialogueStore"
 import { getWebviewContent } from "../helpers/webviewHelper"
 import { fromDialogue, parseRawDialogue, toDialogue } from "../helpers/dialogueParser"
 import { DialogueStoreDeleteMessage, DialogueStoreGenericMessage, StoreUpdateSource } from "../storeMessages"
-import { DeleteSceneMessage, GenericSceneMessage, SceneMessage } from "@workspace/common"
+import { DeleteSceneMessage, GenericSceneMessage, GenericMessage } from "@workspace/common"
 import { DialogueDocument, DialogueFileFormatSettings } from "../wrappers/DialogueDocument"
 import { DIALOGUE_FILE_FORMAT_VERSION } from "../constants"
+import { MessageQueue } from "../classes/MessageQueue"
 
 class DialogueMessageManager {
 
@@ -18,6 +19,7 @@ class DialogueMessageManager {
 
     // a store specifically for this file
     const store = this.getDialogueStore(dialogueTextDocument.uri.toString())
+    const messageQueue = new MessageQueue(message => webviewPanel.webview.postMessage(message))
 
     // allow scripts (quite important)
     webviewPanel.webview.options = {
@@ -60,10 +62,12 @@ class DialogueMessageManager {
 
     // message sender for webview messages
     const webviewListener = webviewPanel.webview.onDidReceiveMessage(message => {
-      const webviewMessage = message as SceneMessage
+      const webviewMessage = message as GenericMessage
 
       if (webviewMessage.messageType === "deleteScene") {
         store.deleteScene(StoreUpdateSource.Webview, webviewMessage.sceneId)
+      } else if (webviewMessage.messageType === "ready") {
+        messageQueue.setReady(true)
       } else {
         store.upsertScene(StoreUpdateSource.Webview, webviewMessage.sceneData)
       }
@@ -78,14 +82,13 @@ class DialogueMessageManager {
       const { messageSource, messageType, sceneData, sceneId } = storeMessage
 
       // send the message to webview
-      // TODO: wait for READY message from webview
       if (messageSource === StoreUpdateSource.Extension) {
         const message: GenericSceneMessage = {
           messageType,
           sceneData,
           sceneId
         }
-        webviewPanel.webview.postMessage(message)
+        messageQueue.enqueueMessage(message)
 
       // otherwise it needs to be an update to the text document
       } else {
@@ -121,13 +124,12 @@ class DialogueMessageManager {
       const { messageSource, sceneId, messageType } = storeMessage
 
       // send to webview
-      // TODO: wait for READY message from webview
       if (messageSource === StoreUpdateSource.Extension) {
         const message: DeleteSceneMessage = {
           messageType,
           sceneId
         }
-        webviewPanel.webview.postMessage(message)
+        messageQueue.enqueueMessage(message)
       
       // otherwise update document
       } else {
