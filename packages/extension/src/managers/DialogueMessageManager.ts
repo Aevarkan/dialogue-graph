@@ -158,11 +158,24 @@ class DialogueMessageManager {
 
     const deleteListener = store.onSceneDelete(handleDeleteMessage)
 
+    /////////////////////
+    //// READY STATE ////
+    /////////////////////
+
+    // not ready when the panel is put into the background
+    const visibilityListener = webviewPanel.onDidChangeViewState(event => {
+      const isVisible = event.webviewPanel.visible
+      if (!isVisible) {
+        messageQueue.setReady(false)
+      }
+    })
+
     //////////////////////
     ////// CLEAN UP //////
     //////////////////////
 
     webviewPanel.onDidDispose(() => {
+      visibilityListener.dispose()
       webviewListener.dispose()
       textDocumentListener.dispose()
       createListener.dispose()
