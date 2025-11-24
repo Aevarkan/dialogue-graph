@@ -212,5 +212,20 @@ export class VisualScene implements Scene {
     }
     return result
   }
+
+  /**
+   * Returns the raw scene data of the visual scene.
+   */
+  public toScene(): Scene {
+    const rawScene: Scene = {
+      buttons: this.buttons,
+      closeCommands: this.closeCommands,
+      npcName: this.npcName,
+      openCommands: this.openCommands,
+      sceneId: this.sceneId,
+      sceneText: this.sceneText
+    }
+    return rawScene
+  }
   
 }
