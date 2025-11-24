@@ -10,7 +10,8 @@ import { useDialogueData } from '@/composables/dialogueData.js'
 import { useVsCode } from '@/composables/vscodeMessages'
 import type { ReadyMessage } from '@workspace/common'
 import SceneNode from '@/components/SceneNode.vue'
-import type { VisualScene } from '@/types'
+import type { VisualScene, VisualSlot } from '@/types'
+import ButtonSlotNode from '@/components/ButtonSlotNode.vue'
 
 const { createScene, deleteScene, onSceneCreate, onSceneDelete, onSceneUpdate, onSlotUpdate, updateScene } = useDialogueData()
 const { inWebview, postMessage } = useVsCode()
@@ -33,6 +34,22 @@ onSceneCreate((sceneId, scene) => {
     type: "scene"
   }
   addNodes(newSceneNode)
+
+  scene.buttons.forEach((button, index) => {
+    const slot: VisualSlot = {
+      index,
+      parentSceneId: sceneId,
+      button
+    }
+    const slotNode: Node = {
+      // TODO: change id to uuid
+      id: sceneId + index,
+      position: { x: 0, y: 10 },
+      data: slot,
+      type: "button-slot"
+    }
+    addNodes(slotNode)
+  })
 })
 
 onSceneUpdate((sceneId, scene) => {
@@ -173,6 +190,10 @@ function handleEditSceneText(sceneId: string, newText: string) {
 
     <template #node-scene="props">
       <SceneNode v-bind="props" @edit-npc-name="handleEditNpcName" @edit-scene-text="handleEditSceneText" />
+    </template>
+
+    <template #node-button-slot="props">
+      <ButtonSlotNode v-bind="props" />
     </template>
 
     <Controls position="top-left">
