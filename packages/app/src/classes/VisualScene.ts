@@ -2,11 +2,11 @@
 // Licensed under the GPLv3 license
 
 import type { ButtonSlotDataChange, SceneCommandDataChange, SceneCommandSlot, VisualSceneCommand, VisualSceneDataChange, VisualSlot } from "@/types";
-import { SCENE_MAX_BUTTONS, type Button, type Scene } from "@workspace/common";
+import { SCENE_MAX_BUTTONS, type Scene } from "@workspace/common";
 import { v4 as uuidv4 } from 'uuid'
 import deepEqual from 'fast-deep-equal'
 
-export class VisualScene implements Scene {
+export class VisualScene {
   
   /**
    * Map of button slots to their node ids.
@@ -24,19 +24,21 @@ export class VisualScene implements Scene {
    * The commands that were last changed from the `updateScene` factory method.
    */
   private lastCommandChanges: SceneCommandDataChange[] = []
+  /**
+   * The stored scene.
+   */
+  private scene: Scene
+  public readonly sceneId: string
 
   private constructor(
-    public buttons: Button[],
-    public closeCommands: string[],
-    public npcName: string,
-    public openCommands: string[],
-    public sceneId: string,
-    public sceneText: string,
+    scene: Scene,
     commandMap: Map<SceneCommandSlot, VisualSceneCommand>,
     buttonMap: Map<number, VisualSlot>
   ) {
     this.buttonMap = buttonMap
     this.commandMap = commandMap
+    this.scene = scene
+    this.sceneId = scene.sceneId
   }
 
   /**
@@ -81,12 +83,7 @@ export class VisualScene implements Scene {
 
     // now that all the ids are made, we can create the visual scene
     const visualScene = new VisualScene(
-      scene.buttons,
-      scene.closeCommands,
-      scene.npcName,
-      scene.openCommands,
-      scene.sceneId,
-      scene.sceneText,
+      scene,
       commandMap,
       buttonMap
     )
@@ -100,8 +97,9 @@ export class VisualScene implements Scene {
    * @throws Throws if the scene ids are not the same.
    */
   public static updateScene(oldScene: VisualScene, updatedScene: Scene): VisualScene {
-    if (oldScene.sceneId !== updatedScene.sceneId) {
-      throw new Error(`Cannot update scene: IDs do not match (${oldScene.sceneId} !== ${updatedScene.sceneId})`);
+    const rawOldScene = oldScene.scene
+    if (rawOldScene.sceneId !== updatedScene.sceneId) {
+      throw new Error(`Cannot update scene: IDs do not match (${rawOldScene.sceneId} !== ${updatedScene.sceneId})`);
     }
 
     /** This is the FULL slot map, not just changed slots. Does not include deleted slots. */
@@ -109,7 +107,7 @@ export class VisualScene implements Scene {
     const updatedButtons = new Map<number, ButtonSlotDataChange>()
     for (let index = 0; index < SCENE_MAX_BUTTONS; index++) {
       // check if the buttons have changed
-      const oldButton = oldScene.buttons[index]
+      const oldButton = rawOldScene.buttons[index]
       const newButton = updatedScene.buttons[index]
       const isEqual = deepEqual(oldButton, newButton)
       const buttonUuid = oldScene.buttonMap.get(index)?.id ?? uuidv4()
@@ -165,7 +163,7 @@ export class VisualScene implements Scene {
 
     // open commands
     const newOpenCommandsArray = updatedScene.openCommands
-    const oldOpenCommandsArray = oldScene.openCommands
+    const oldOpenCommandsArray = rawOldScene.openCommands
     const isOpenCommandEqual = (deepEqual(oldOpenCommandsArray, newOpenCommandsArray))
     // if the incoming scene has opening commands, then add them
     const openCommandId = oldScene.commandMap.get("open")?.id ?? uuidv4()
@@ -209,7 +207,7 @@ export class VisualScene implements Scene {
 
     // now close commands
     const newCloseCommandsArray = updatedScene.closeCommands
-    const oldCloseCommandsArray = oldScene.closeCommands
+    const oldCloseCommandsArray = rawOldScene.closeCommands
     const isCloseCommandEqual = (deepEqual(oldCloseCommandsArray, newCloseCommandsArray))
     // if the incoming scene has closing commands, then add them
     const closeCommandId = oldScene.commandMap.get("close")?.id ?? uuidv4()
@@ -254,12 +252,7 @@ export class VisualScene implements Scene {
     
     // now the new scene can be constructed
     const updatedVisualScene = new VisualScene(
-      updatedScene.buttons,
-      updatedScene.closeCommands,
-      updatedScene.npcName,
-      updatedScene.openCommands,
-      updatedScene.sceneId,
-      updatedScene.sceneText,
+      updatedScene,
       updatedCommandMap,
       updatedButtonMap
     )
@@ -308,12 +301,7 @@ export class VisualScene implements Scene {
    */
   public toScene(): Scene {
     const rawScene: Scene = {
-      buttons: this.buttons,
-      closeCommands: this.closeCommands,
-      npcName: this.npcName,
-      openCommands: this.openCommands,
-      sceneId: this.sceneId,
-      sceneText: this.sceneText
+      ...this.scene
     }
     return rawScene
   }
