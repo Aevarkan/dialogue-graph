@@ -13,7 +13,7 @@ import ButtonSlotNode from '@/components/ButtonSlotNode.vue'
 import type { VisualScene } from '@/classes/VisualScene'
 import SceneCommandNode from '@/components/SceneCommandNode.vue'
 import { toCommandNode, toSceneNode, toSlotNode } from '@/helpers/nodes'
-import type { DataChangeCategory, VisualSceneCommand, VisualSlot } from '@/types'
+import type { DataChangeCategory, SceneCommandSlot, VisualSceneCommand, VisualSlot } from '@/types'
 
 const { createScene, deleteScene, onSceneCreate, onSceneDelete, onSceneUpdate, updateScene, getScene } = useDialogueData()
 const { inWebview, postMessage } = useVsCode()
@@ -196,6 +196,18 @@ function handleEditSceneText(sceneId: string, newText: string) {
   existingScene.sceneText = newText
   updateScene(existingScene)
 }
+
+function handleEditCommand(parentSceneId: string, nodeId: string, commandType: SceneCommandSlot, newCommands: string[]) {
+  updateNodeData<VisualSceneCommand>(nodeId, { commands: newCommands })
+
+  const existingScene = getScene(parentSceneId)
+  if (!existingScene) {
+    throw new Error("handleEditCommand no scene")
+  }
+
+  existingScene.setCommand(commandType, newCommands)
+  updateScene(existingScene)
+}
 </script>
 
 <template>
@@ -220,7 +232,7 @@ function handleEditSceneText(sceneId: string, newText: string) {
     </template>
 
     <template #node-command-slot="props">
-      <SceneCommandNode v-bind="props" />
+      <SceneCommandNode v-bind="props" @edit-command="handleEditCommand" />
     </template>
 
     <Controls position="top-left">
