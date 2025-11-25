@@ -102,5 +102,5 @@ export interface VisualSlot {
   /**
    * The current button in this slot.
    */
-  button?: Button
+  button: Button
 }
