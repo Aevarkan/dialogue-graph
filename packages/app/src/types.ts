@@ -11,35 +11,35 @@ export type DataChangeCategory = "created" | "modified" | "deleted"
 export type VisualSceneDataChange = SceneCommandDataChange | ButtonSlotDataChange
 
 export interface SceneCommandDataChange {
-  kind: "sceneCommand"
+  readonly kind: "sceneCommand"
   /**
    * Unique identifier.
    */
-  id: string
+  readonly id: string
   /**
    * Whether the command runs on scene open or scene close.
    */
-  type: SceneCommandSlot,
+  readonly type: SceneCommandSlot,
   /**
    * The type of change.
    */
-  change: DataChangeCategory
+  readonly change: DataChangeCategory
 }
 
 export interface ButtonSlotDataChange {
-  kind: "button"
+  readonly kind: "button"
   /**
    * Uuid of this slot.
    */
-  id: string
+  readonly id: string
   /**
    * The slot's index, starting from 0.
    */
-  index: number
+  readonly index: number
   /**
    * The type of change.
    */
-  change: DataChangeCategory
+  readonly change: DataChangeCategory
 }
 
 /**
@@ -65,7 +65,7 @@ export interface VisualSceneCommand {
   /**
    * Unique identifier.
    */
-  id: string
+  readonly id: string
   /**
    * Whether the command runs on scene open or scene close.
    */
@@ -76,7 +76,7 @@ export interface VisualSceneCommand {
    * @remarks
    * Is the `scene_tag` in JSON definition.
    */
-  parentSceneId: string
+  readonly parentSceneId: string
   /**
    * The commands that the NPC will run on scene open/close.
    */
@@ -87,14 +87,14 @@ export interface VisualSlot {
   /**
    * Uuid of this slot.
    */
-  id: string
+  readonly id: string
   /**
    * The identifier of the slot's parent scene.
    * 
    * @remarks
    * Is the `scene_tag` in JSON definition.
    */
-  parentSceneId: string
+  readonly parentSceneId: string
   /**
    * The slot's index, starting from 0.
    */
