@@ -12,12 +12,12 @@ const buttonComputed = computed({
   get: () => buttonRef?.value,
   set: (button: Button | null) => {
     buttonRef.value = button
-    emit('editButton', props.data.parentSceneId, props.data.index, button)
+    emit('editButton', props.data.parentSceneId, props.data.id, props.data.index, button)
   }
 })
 
 const emit = defineEmits<{
-  (event: 'editButton', parentSceneId: string, buttonIndex: number, button: Button | null): void
+  (event: 'editButton', parentSceneId: string, nodeId: string, buttonIndex: number, button: Button | null): void
 }>()
 </script>
 

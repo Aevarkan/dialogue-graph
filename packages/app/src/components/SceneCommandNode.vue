@@ -8,12 +8,12 @@ const props = defineProps<NodeProps<VisualSceneCommand>>()
 const commandsRef = computed({
   get: () => props.data.commands.join("\n"),
   set: (newCommandText: string) => {
-    emit('editCommand', props.data.parentSceneId, props.data.type, newCommandText.split("\n"))
+    emit('editCommand', props.data.parentSceneId, props.data.id, props.data.type, newCommandText.split("\n"))
   }
 })
 
 const emit = defineEmits<{
-  (event: 'editCommand', parentSceneId: string, commandType: SceneCommandSlot, newCommands: string[]): void
+  (event: 'editCommand', parentSceneId: string, nodeId: string, commandType: SceneCommandSlot, newCommands: string[]): void
 }>()
 </script>
 
