@@ -89,8 +89,8 @@ function addNewScene(newScene: VisualScene) {
   })
 }
 
-onSceneDelete((sceneId) => {
-  removeNodes(sceneId)
+onSceneDelete((sceneId, children) => {
+  removeNodes([sceneId, ...children])
 })
 
 // our dark mode toggle flag
