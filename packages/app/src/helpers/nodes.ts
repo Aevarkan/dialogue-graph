@@ -37,14 +37,14 @@ export function toSlotNode(slot: VisualSlot, location: XYPosition = defaultLocat
 }
 
 /**
- * Creates a node of type `scene-command`.
+ * Creates a node of type `command-slot`.
  */
 export function toCommandNode(sceneCommand: VisualSceneCommand, location: XYPosition = defaultLocation) {
   const commandNode: Node<VisualSceneCommand> = {
     id: sceneCommand.id,
     position: location,
     data: sceneCommand,
-    type: "scene-command"
+    type: "command-slot"
   }
   return commandNode
 }
