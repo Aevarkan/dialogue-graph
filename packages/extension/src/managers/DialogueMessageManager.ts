@@ -183,6 +183,23 @@ class DialogueMessageManager {
       deleteListener.dispose()
       this.queueDeleteDialogueStore(dialogueTextDocument.uri.toString())
     })
+
+    /////////////////////////////////////////////////////////////
+    //// INITIALISE AFTER ALL EVENT LISTENERS ARE SUBSCRIBED ////
+    /////////////////////////////////////////////////////////////
+
+    // initialise the content
+    const initialDocumentText = dialogueTextDocument.getText()
+    const initialMaybeParsedText = parseRawDialogue(initialDocumentText)
+    if (initialMaybeParsedText) {
+      const initialParsedText = initialMaybeParsedText
+      // now we have real scenes
+      const initialScenes = fromDialogue(initialParsedText)
+      store.setScenes(StoreUpdateSource.Extension, initialScenes)
+    } else {
+      console.error("JSON parsing failed!!!")
+      window.showErrorMessage("JSON parsing failed!!! From file `DialogueMessageManager`")
+    }
   }
 
   private queueDeleteDialogueStore(fileUri: string) {
