@@ -7,30 +7,44 @@ import { computed, ref, watch } from 'vue';
 const props = defineProps<NodeProps<VisualSlot>>()
 const buttonRef = ref<Button>({ ...props.data.button })
 
+watch(
+  () => props.data.button,
+  (updatedButton) => {
+    buttonRef.value = { ...updatedButton }
+  },
+  { deep: true, immediate: true }
+)
+
 const commandText = computed({
   get: () => buttonRef.value.commands.join("\n"),
-  set: (newCommands) => buttonRef.value.commands = newCommands.split("\n")
+  set: (newCommands) => {
+    buttonRef.value.commands = newCommands.split("\n")
+    update()
+  }
 })
 
-watch(
-  buttonRef,
-  (newButton) => {
-    console.log(newButton)
-    emit(
+const displayName = computed({
+  get: () => buttonRef.value.displayName,
+  set: (newName) => {
+    buttonRef.value.displayName = newName
+    update()
+  }
+})
+
+function update() {
+  emit(
       'editButton',
       props.data.parentSceneId,
       props.data.id,
       props.data.index,
       {
-        ...newButton,
+        ...buttonRef.value,
         // because the reactivity causes problems
-        commands: [...newButton.commands]
+        commands: [...buttonRef.value.commands]
       }
     )
-  },
-  { deep: true }
-)
-  
+}
+
 const emit = defineEmits<{
   (event: 'editButton', parentSceneId: string, nodeId: string, buttonIndex: number, button: Button): void
 }>()
@@ -46,7 +60,7 @@ const emit = defineEmits<{
     </p>
     <!-- show button info if it exists -->
     <div v-if="buttonRef">
-      <input v-model="buttonRef.displayName" />
+      <input v-model="displayName" />
       <textarea v-model="commandText" />
     </div>
   </div>
