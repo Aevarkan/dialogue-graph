@@ -47,7 +47,7 @@ const emit = defineEmits<{
     <!-- show button info if it exists -->
     <div v-if="buttonRef">
       <input v-model="buttonRef.displayName" />
-      <input v-model="commandText" />
+      <textarea v-model="commandText" />
     </div>
   </div>
 </template>
