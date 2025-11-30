@@ -3,6 +3,8 @@ import { type NodeProps } from '@vue-flow/core'
 import { computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid'
 import type { VisualScene } from '@/types';
+import { SCENE_MAX_BUTTONS } from '@workspace/common';
+import { ArrowUpLeft, Plus, X } from 'lucide-vue-next';
 
 const props = defineProps<NodeProps<VisualScene>>()
 
@@ -48,24 +50,39 @@ const sceneTextUuid = `scene-text-${localUuid}`
       </label>
       <input :id=npcUuid v-model="npcNameRef" />
 
-      <label :for=openUuid>
+      <span :id="openUuid">
         Open Command:
-      </label>
-      <span :id=openUuid>
-        open!
       </span>
+      <button :aria-labelledby="openUuid">
+        <ArrowUpLeft />
+      </button>
 
-      <label :for=closeUuid>
+      <span :id="closeUuid">
         Close Command:
-      </label>
-      <span :id=closeUuid>
-        close!
       </span>
+      <button :aria-labelledby="closeUuid">
+        <ArrowUpLeft />
+      </button>
 
     </div>
 
     <div class="scene-buttons">
-
+      <label :for="buttonsUuid">
+        Buttons
+      </label>
+      <div :id="buttonsUuid" class="button-grid">
+        <template v-for="(slot, index) in SCENE_MAX_BUTTONS" :key="index">
+            <button v-if="props.data.buttonNodes[index]">
+              {{ slot }}
+            </button>
+            <button v-else-if="index === props.data.buttonNodes.length">
+              <Plus />
+            </button>
+            <button disabled class="disabled-button" v-else>
+              <X />
+            </button>
+        </template>
+      </div>
     </div>
 
     <div class="scene-text">
@@ -83,6 +100,7 @@ const sceneTextUuid = `scene-text-${localUuid}`
   display: flex;
   align-content: center;
   flex-direction: column;
+  padding: 2ch;
 }
 .scene-node-header {
   display: grid;
@@ -90,5 +108,38 @@ const sceneTextUuid = `scene-text-${localUuid}`
   row-gap: 10px;  /* vertical spacing between rows */
   column-gap: 10px;
   align-items: center;
+}
+
+.scene-buttons {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 columns */
+  grid-template-rows: repeat(2, auto);    /* 2 rows */
+  gap: 8px;                               /* spacing */
+  width: 100%;
+}
+
+.button-grid button,
+.button-grid .disabled-button {
+  width: 100%;
+  height: 40px; /* adjust as needed */
+}
+
+.scene-text {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  flex-direction: column;
+}
+
+textarea {
+  min-width: 10ch;
+  min-height: 2ch;
 }
 </style>
