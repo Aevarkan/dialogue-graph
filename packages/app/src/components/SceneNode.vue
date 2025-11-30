@@ -2,7 +2,7 @@
 import { type NodeProps } from '@vue-flow/core'
 import { computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid'
-import type { VisualScene } from '@/types';
+import type { SceneButtonSlot, SceneFunctionSlot, VisualScene } from '@/types';
 import { SCENE_MAX_BUTTONS } from '@workspace/common';
 import { ArrowUpLeft, Plus, X } from 'lucide-vue-next';
 
@@ -24,7 +24,34 @@ const npcNameRef = computed({
 const emit = defineEmits<{
   (event: 'editNpcName', sceneId: string, newNpcName: string): void
   (event: 'editSceneText', sceneId: string, newSceneText: string): void
+  (event: "selectNode", nodeId: string): void
+  (event: "addSceneSlot", sceneId: string, sceneSlot: SceneFunctionSlot): void
 }>()
+
+function addSceneSlot(sceneSlot: SceneFunctionSlot) {
+  emit("addSceneSlot", props.data.sceneId, sceneSlot)
+}
+
+function selectButtonSlot(index: number) {
+  const nodeId = props.data.buttonNodes[index]
+  if (nodeId) {
+    emit('selectNode', nodeId)
+  }
+}
+
+function selectOpenCommand() {
+  const openCommandId = props.data.openCommandNode
+  if (openCommandId) {
+    emit("selectNode", openCommandId)
+  }
+}
+
+function selectCloseCommand() {
+  const closeCommandId = props.data.closeCommandNode
+  if (closeCommandId) {
+    emit("selectNode", closeCommandId)
+  }
+}
 
 const localUuid = uuidv4()
 const sceneUuid = `scene-id-${localUuid}`
@@ -53,26 +80,30 @@ const sceneTextUuid = `scene-text-${localUuid}`
       <span :id="openUuid">
         Open Command:
       </span>
-      <button class="command-button" :aria-labelledby="openUuid">
-        <div v-if="props.data.openCommandNode">
+      <div v-if="props.data.openCommandNode">
+        <button class="command-button" :aria-labelledby="openUuid" @click="selectOpenCommand">
           <ArrowUpLeft />
-        </div>
-        <div v-else>
+        </button>
+      </div>
+      <div v-else>
+        <button class="command-button" :aria-labelledby="openUuid" @click="addSceneSlot('open')">
           <Plus />
-        </div>
-      </button>
+        </button>
+      </div>
 
       <span :id="closeUuid">
         Close Command:
       </span>
-      <button class="command-button" :aria-labelledby="closeUuid">
-        <div v-if="props.data.closeCommandNode">
+      <div v-if="props.data.closeCommandNode">
+        <button class="command-button" :aria-labelledby="closeUuid" @click="selectCloseCommand">
           <ArrowUpLeft />
-        </div>
-        <div v-else>
+        </button>
+      </div>
+      <div v-else>
+        <button class="command-button" :aria-labelledby="closeUuid" @click="addSceneSlot('close')">
           <Plus />
-        </div>
-      </button>
+        </button>
+      </div>
 
     </div>
 
@@ -82,10 +113,10 @@ const sceneTextUuid = `scene-text-${localUuid}`
       </label>
       <div :id="buttonsUuid" class="button-grid">
         <template v-for="(slot, index) in SCENE_MAX_BUTTONS" :key="index">
-            <button v-if="props.data.buttonNodes[index]">
+            <button v-if="props.data.buttonNodes[index]" @click="selectButtonSlot(index)">
               {{ slot }}
             </button>
-            <button v-else-if="index === props.data.buttonNodes.length">
+            <button v-else-if="index === props.data.buttonNodes.length" @click="addSceneSlot(slot.toString() as SceneButtonSlot)">
               <Plus />
             </button>
             <button disabled class="disabled-button" v-else>
