@@ -5,8 +5,11 @@ import { v4 as uuidv4 } from 'uuid'
 import type { SceneButtonSlot, SceneFunctionSlot, VisualScene } from '@/types';
 import { SCENE_MAX_BUTTONS } from '@workspace/common';
 import { ArrowUpLeft, Plus, X } from 'lucide-vue-next';
+import { useNodeDrag } from '@/composables/manualDrag';
 
 const props = defineProps<NodeProps<VisualScene>>()
+
+const drag = useNodeDrag(props.id)
 
 // sceneId change means deleting the scene
 // no need to track it
@@ -63,7 +66,7 @@ const sceneTextUuid = `scene-text-${localUuid}`
 </script>
 
 <template>
-  <div class="scene-node-container">
+  <div class="scene-node-container" @mousedown="drag.onMouseDown">
     <div class="scene-node-header">
       <label :for=sceneUuid>
         Scene ID:
