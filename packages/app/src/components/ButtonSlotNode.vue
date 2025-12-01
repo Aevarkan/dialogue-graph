@@ -52,21 +52,67 @@ function update() {
 const emit = defineEmits<{
   (event: 'editButton', parentSceneId: string, nodeId: string, buttonIndex: number, button: Button): void
 }>()
+
+// uuids
+const sceneUuid = `scene-id-${props.data.id}`
+const indexUuid = `button-index-${props.data.id}`
+const nameUuid = `display-name-${props.data.id}`
+const commandTextUuid = `button-commands-${props.data.id}`
 </script>
 
 <template>
-  <div class="scene-node-container" @mousedown="drag.onMouseDown">
-    <p>
-      {{ props.data.parentSceneId }}
-    </p>
-    <p>
-      {{ props.data.index + 1 }}
-    </p>
-    <input v-model="displayName" />
-    <textarea v-model="commandText" />
+  <div class="button-node-container" @mousedown="drag.onMouseDown">
+    <div class="button-node-header">
+      <label :for=sceneUuid>
+        Parent Scene:
+      </label>
+      <span :id=sceneUuid>
+        {{ props.data.parentSceneId }}
+      </span>
+  
+      <label :for=indexUuid>
+        Slot Index:
+      </label>
+      <span :id=indexUuid>
+        {{ props.data.index + 1 }}
+      </span>
+  
+      <label :for=nameUuid>
+        Display Name:
+      </label>
+      <input :id="nameUuid" v-model="displayName" />
+    </div>
+
+    <div class="button-commands">
+      <label :for="commandTextUuid">
+        Commands
+      </label>
+      <textarea :id="commandTextUuid" v-model="commandText" />
+    </div>
   </div>
 </template>
 
 <style scoped>
+.button-node-container {
+  background-color: rgb(142, 108, 180);
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  padding: 2ch;
+}
 
+.button-node-header {
+  display: grid;
+  grid-template-columns: fit-content(100px) 1fr;
+  row-gap: 10px;  /* vertical spacing between rows */
+  column-gap: 10px;
+  align-items: center;
+}
+
+.button-commands {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  flex-direction: column;
+}
 </style>
