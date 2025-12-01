@@ -240,8 +240,6 @@ const viewportDrag = useViewportPan()
     >
       <Background pattern-color="#aaa" :gap="16" />
   
-      <MiniMap />
-  
       <template #node-scene="props">
         <SceneNode v-bind="props" @edit-npc-name="handleEditNpcName" @edit-scene-text="handleEditSceneText" />
       </template>
@@ -254,24 +252,6 @@ const viewportDrag = useViewportPan()
         <SceneCommandNode v-bind="props" @edit-command="handleEditCommand" />
       </template>
   
-      <Controls position="top-left">
-        <ControlButton title="Reset Transform" @click="resetTransform">
-          <RotateCcw />
-        </ControlButton>
-  
-        <!-- <ControlButton title="Shuffle Node Positions" @click="updatePos">
-          <Icon name="update" />
-        </ControlButton> -->
-  
-        <ControlButton title="Toggle Dark Mode" @click="toggleDarkMode">
-          <Sun v-if="dark"/>
-          <Moon v-else/>
-        </ControlButton>
-  
-        <!-- <ControlButton title="Log `toObject`" @click="logToObject">
-          <Icon name="log" />
-        </ControlButton> -->
-      </Controls>
     </VueFlow>
   </div>
 </template>
