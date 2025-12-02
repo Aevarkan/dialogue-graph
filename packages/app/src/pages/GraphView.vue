@@ -243,6 +243,21 @@ function handleDeleteCommandNode(parentSceneId: string, commandType: SceneComman
   updateScene(scene)
 }
 
+function handleIndexSwap(parentSceneId: string, currentIndex: number, targetIndex: number) {
+  const scene = getScene(parentSceneId)
+  if (!scene) return
+
+  const newSlots = scene.swapSlots(currentIndex, targetIndex)
+  console.log(newSlots)
+  newSlots.forEach(slot => {
+    updateNodeData<VisualSlot>(slot.id, { ...slot })
+  })
+
+  // update the scene as well
+  updateNodeData<VisualScene>(scene.sceneId, { ...scene.getVisualScene() })
+  updateScene(scene)
+}
+
 // viewport custom drag handler
 const viewportDrag = useViewportPan()
 
@@ -264,7 +279,7 @@ const viewportDrag = useViewportPan()
       </template>
   
       <template #node-button-slot="props">
-        <ButtonSlotNode v-bind="props" @edit-button="handleButtonEdit" @select-node="handleSelectNode" @delete-slot-node="handleDeleteSlotNode" />
+        <ButtonSlotNode v-bind="props" @edit-button="handleButtonEdit" @select-node="handleSelectNode" @delete-slot-node="handleDeleteSlotNode" @swap-index="handleIndexSwap" />
       </template>
   
       <template #node-command-slot="props">

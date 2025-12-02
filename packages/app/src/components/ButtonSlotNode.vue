@@ -3,7 +3,7 @@ import { useNodeDrag } from '@/composables/manualDrag';
 import type { VisualSlot } from '@/types';
 import { type NodeProps } from '@vue-flow/core'
 import type { Button } from '@workspace/common';
-import { ArrowUpLeft, Trash2 } from 'lucide-vue-next';
+import { ArrowUpLeft, Minus, Plus, Trash2 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<NodeProps<VisualSlot>>()
@@ -50,6 +50,10 @@ function update() {
     )
 }
 
+function swapToIndex(targetIndex: number) {
+  emit("swapIndex", props.data.parentSceneId, props.data.index, targetIndex)
+}
+
 function deleteSlotNode() {
   emit("deleteSlotNode", props.data.parentSceneId, props.data.index, props.data.id)
 }
@@ -63,6 +67,7 @@ const emit = defineEmits<{
   (event: 'editButton', parentSceneId: string, nodeId: string, buttonIndex: number, button: Button): void
   (event: "selectNode", nodeId: string): void
   (event: "deleteSlotNode", parentSceneId: string, index: number, nodeId: string): void
+  (event: "swapIndex", parentSceneId: string, currentIndex: number, targetIndex: number): void
 }>()
 
 // uuids
@@ -93,9 +98,26 @@ const commandTextUuid = `button-commands-${props.data.id}`
       <label :for=indexUuid>
         Slot Index:
       </label>
-      <span :id=indexUuid>
-        {{ props.data.index + 1 }}
-      </span>
+      <div :id=indexUuid>
+        <span>
+          {{ props.data.index + 1 }}
+        </span>
+        <!-- change index buttons -->
+        <!-- disabled if highest -->
+        <button disabled v-if="props.data.highestIndex">
+          <Plus />
+        </button>
+        <button v-else @click="swapToIndex(props.data.index + 1)">
+          <Plus />
+        </button>
+        <!-- enabled if not index 0 -->
+        <button v-if="props.data.index !== 0" @click="swapToIndex(props.data.index - 1)">
+          <Minus />
+        </button>
+        <button disabled v-else>
+          <Minus />
+        </button>
+      </div>
   
       <label :for=nameUuid>
         Display Name:
