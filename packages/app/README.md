@@ -1,2 +1,3 @@
-# dialogue-graph
-Dialogue graph
+# Dialogue Node Editor
+
+A visual node editor for Minecraft Bedrock dialogue files.
