@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - added edges
 
+### Fixed
+
+- button index swapping correctly persists on state
+
 ## [0.0.2] 2025-12-06
 
 ### Fixed
