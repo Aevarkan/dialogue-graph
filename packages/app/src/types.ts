@@ -66,6 +66,20 @@ export type SceneButtonSlot = "1" | "2" | "3" | "4" | "5" | "6"
 export type SceneCommandSlot = "open" | "close"
 
 /**
+ * Node info that is saved to persistent state.
+ */
+export type NodeStateOptions =
+{
+  nodeType: "scene"
+} | {
+  nodeType: "command"
+  slot: SceneCommandSlot
+} | {
+  nodeType: "button"
+  slot: number
+}
+
+/**
  * Visual representation of a scene.
  */
 export interface VisualScene {
