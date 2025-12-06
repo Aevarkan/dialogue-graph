@@ -4,6 +4,7 @@
 # essentials
 !package.json
 !LICENSE
+!CHANGELOG.md
 !dist/
 !dist/**
 !media/

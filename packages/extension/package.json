@@ -8,9 +8,10 @@
   "type": "commonjs",
   "scripts": {
     "copy-media": "node scripts/copy-app-media-files.cjs",
+    "copy-info-files": "node scripts/copy-info-files.cjs",
     "compile": "tsdown",
     "build": "pnpm run copy-media && pnpm run compile",
-    "package": "vsce package -o bedrock-dialogue-node-editor.vsix"
+    "package": "pnpm run copy-info-files && vsce package -o bedrock-dialogue-node-editor.vsix"
   },
   "repository": {
     "type": "git",
