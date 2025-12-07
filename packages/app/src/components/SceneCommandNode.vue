@@ -2,6 +2,7 @@
 import { useNodeDrag } from '@/composables/manualDrag';
 import type { SceneCommandSlot, VisualSceneCommand } from '@/types';
 import { type NodeProps } from '@vue-flow/core'
+import { useTextareaAutosize } from '@vueuse/core';
 import { ArrowUpLeft, Trash2 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -15,6 +16,7 @@ const commandsRef = computed({
     emit('editCommand', props.data.parentSceneId, props.data.id, props.data.type, newCommandText.split("\n"))
   }
 })
+const { textarea: textAreaRef } = useTextareaAutosize({ input: commandsRef })
 
 function deleteCommandNode() {
   emit("deleteCommandNode", props.data.parentSceneId, props.data.type, props.data.id)
@@ -67,7 +69,7 @@ const commandTextUuid = `button-commands-${props.data.id}`
       <label :for="commandTextUuid">
         Commands
       </label>
-      <textarea :id="commandTextUuid" v-model="commandsRef" @mousedown.stop />
+      <textarea :id="commandTextUuid" ref="textAreaRef" v-model="commandsRef" @mousedown.stop />
     </div>
   </div>
 </template>
@@ -94,5 +96,13 @@ const commandTextUuid = `button-commands-${props.data.id}`
   column-gap: 10px;
   align-items: center;
   flex-direction: column;
+}
+
+textarea {
+  min-width: 40ch;
+  min-height: 2ch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  resize: horizontal;
 }
 </style>

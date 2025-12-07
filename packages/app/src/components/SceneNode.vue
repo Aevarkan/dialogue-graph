@@ -6,6 +6,7 @@ import type { SceneButtonSlot, SceneFunctionSlot, VisualScene } from '@/types';
 import { SCENE_MAX_BUTTONS } from '@workspace/common';
 import { ArrowUpLeft, Plus, Trash2, X } from 'lucide-vue-next';
 import { useNodeDrag } from '@/composables/manualDrag';
+import { useTextareaAutosize } from '@vueuse/core';
 
 const props = defineProps<NodeProps<VisualScene>>()
 
@@ -14,10 +15,13 @@ const drag = useNodeDrag(props.id, props.data.sceneId, { nodeType: "scene" })
 // sceneId change means deleting the scene
 // no need to track it
 
+// text area autosizing
 const sceneTextRef = computed({
   get: () => props.data.sceneText,
   set: (newSceneText: string) => emit('editSceneText', props.data.sceneId, newSceneText)
 })
+const { textarea: textAreaRef } = useTextareaAutosize({ input: sceneTextRef })
+
 
 const npcNameRef = computed({
   get: () => props.data.npcName,
@@ -143,7 +147,12 @@ const sceneTextUuid = `scene-text-${localUuid}`
       <label :for=sceneTextUuid>
         Scene Text
       </label>
-      <textarea :id=sceneTextUuid v-model="sceneTextRef" @mousedown.stop />
+      <textarea
+        :id=sceneTextUuid
+        ref="textAreaRef"
+        v-model="sceneTextRef"
+        @mousedown.stop
+      />
     </div>
   </div>
 </template>
@@ -202,7 +211,10 @@ button {
 }
 
 textarea {
-  min-width: 10ch;
+  min-width: 50ch;
   min-height: 2ch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  resize: horizontal;
 }
 </style>
