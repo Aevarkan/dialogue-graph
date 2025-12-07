@@ -2,6 +2,7 @@
 import { useNodeDrag } from '@/composables/manualDrag';
 import type { VisualSlot } from '@/types';
 import { type NodeProps } from '@vue-flow/core'
+import { useTextareaAutosize } from '@vueuse/core';
 import type { Button } from '@workspace/common';
 import { ArrowUpLeft, Minus, Plus, Trash2 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
@@ -34,6 +35,7 @@ const commandText = computed({
     update()
   }
 })
+const { textarea: textAreaRef } = useTextareaAutosize({ input: commandText })
 
 const displayName = computed({
   get: () => buttonRef.value.displayName,
@@ -136,7 +138,7 @@ const commandTextUuid = `button-commands-${props.data.id}`
       <label :for="commandTextUuid">
         Commands
       </label>
-      <textarea :id="commandTextUuid" v-model="commandText" @mousedown.stop />
+      <textarea :id="commandTextUuid" ref="textAreaRef" v-model="commandText" @mousedown.stop />
     </div>
   </div>
 </template>
@@ -163,5 +165,13 @@ const commandTextUuid = `button-commands-${props.data.id}`
   column-gap: 10px;
   align-items: center;
   flex-direction: column;
+}
+
+textarea {
+  min-width: 40ch;
+  min-height: 2ch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  resize: horizontal;
 }
 </style>
