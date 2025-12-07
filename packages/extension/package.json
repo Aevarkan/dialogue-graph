@@ -13,6 +13,7 @@
     "build": "pnpm run copy-media && pnpm run compile",
     "package": "pnpm run copy-info-files && vsce package -o bedrock-dialogue-node-editor.vsix"
   },
+  "publisher": "aevarkan",
   "repository": {
     "type": "git",
     "url": "https://github.com/Aevarkan/dialogue-node-editor"
