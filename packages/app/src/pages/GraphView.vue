@@ -15,6 +15,8 @@ import { useLayoutData } from '@/composables/useLayoutData'
 import { makeChildEdge } from '@/helpers/edges'
 import { ref } from 'vue'
 import { useNodeLayout } from '@/composables/useNodeLayout'
+import { MiniMap } from '@vue-flow/minimap'
+import { MapMinus, MapPlus, Plus } from 'lucide-vue-next'
 
 const { createScene, deleteScene, onSceneCreate, onSceneDelete, onSceneUpdate, updateScene, getScene } = useDialogueData()
 const { inWebview, postMessage } = useVsCode()
@@ -330,6 +332,13 @@ function groupNodesAroundScene(sceneId: string) {
   }
 }
 
+// minimap toggle
+const showMiniMap = ref(false)
+
+function toggleMiniMap() {
+  showMiniMap.value = !showMiniMap.value
+}
+
 </script>
 
 <template>
@@ -343,6 +352,10 @@ function groupNodesAroundScene(sceneId: string) {
     >
       <Background pattern-color="#aaa" :gap="16" />
   
+      <template v-if="showMiniMap">
+        <MiniMap />
+      </template>
+
       <template #node-scene="props">
         <SceneNode v-bind="props" @edit-npc-name="handleEditNpcName" @edit-scene-text="handleEditSceneText" @select-node="handleSelectNode" @add-scene-slot="handleAddSceneSlot" @delete-scene="deleteScene" @collect-scene-nodes="groupNodesAroundScene" />
       </template>
@@ -359,7 +372,14 @@ function groupNodesAroundScene(sceneId: string) {
 
     <div class="overlay-wrapper" @mousedown.stop>
       <input v-model="newSceneName" />
-      <button @click="handleAddNewSceneButton">+</button>
+      <button @click="handleAddNewSceneButton">
+        <Plus />
+      </button>
+      <br />
+      <button @click="toggleMiniMap">
+        <MapMinus v-if="showMiniMap" />
+        <MapPlus v-else />
+      </button>
     </div>
   </div>
 </template>
