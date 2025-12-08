@@ -301,9 +301,11 @@ const viewportDrag = useViewportPan()
 const newSceneName = ref('')
 function handleAddNewSceneButton() {
   const existingScene = getScene(newSceneName.value)
-  if (existingScene) {
-    return
-  }
+  if (existingScene) return
+
+  // no empty scene name is allowed
+  if (newSceneName.value === "") return
+
   const newScene: Scene = {
     sceneId: newSceneName.value,
     npcName: "",

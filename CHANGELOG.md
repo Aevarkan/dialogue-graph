@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - text areas now resize automatically
 
+### Fixed
+
+- create scene button cannot create a scene with a blank id
+
 ## [0.1.1] 2025-12-07
 
 No user changes. The extension is now automatically published through a GitHub workflow.
