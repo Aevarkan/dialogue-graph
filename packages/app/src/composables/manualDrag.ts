@@ -3,7 +3,7 @@
 
 import { ref } from 'vue'
 import { useGetPointerPosition, useVueFlow } from '@vue-flow/core'
-import { useLayout } from './useLayout'
+import { useLayoutData } from './useLayoutData'
 import type { NodeStateOptions } from '@/types'
 
 export function useNodeDrag(nodeId: string, sceneId: string, nodeInfo: NodeStateOptions) {
@@ -15,7 +15,7 @@ export function useNodeDrag(nodeId: string, sceneId: string, nodeInfo: NodeState
 
   let nodeInformation = nodeInfo
 
-  const { setNodePosition } = useLayout()
+  const { setNodePosition } = useLayoutData()
 
   function updateNodeInfo(nodeInfo: NodeStateOptions) {
     console.log(nodeId, sceneId, nodeInfo)

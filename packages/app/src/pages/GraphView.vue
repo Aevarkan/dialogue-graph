@@ -11,13 +11,13 @@ import SceneCommandNode from '@/components/SceneCommandNode.vue'
 import { toCommandNode, toSceneNode, toSlotNode } from '@/helpers/nodes'
 import type { DataChangeCategory, SceneCommandSlot, SceneFunctionSlot, VisualScene, VisualSceneCommand, VisualSlot } from '@/types'
 import { useViewportPan } from '@/composables/viewportPanDrag'
-import { useLayout } from '@/composables/useLayout'
+import { useLayoutData } from '@/composables/useLayoutData'
 import { makeChildEdge } from '@/helpers/edges'
 import { ref } from 'vue'
 
 const { createScene, deleteScene, onSceneCreate, onSceneDelete, onSceneUpdate, updateScene, getScene } = useDialogueData()
 const { inWebview, postMessage } = useVsCode()
-const { getNodePosition, getViewportState, setViewportState, setNodePosition } = useLayout()
+const { getNodePosition, getViewportState, setViewportState, setNodePosition } = useLayoutData()
 
 const { onInit, onConnect, addEdges, addNodes, updateNodeData, removeNodes, findNode, updateNode, viewport, setCenter, onViewportChangeEnd } = useVueFlow()
 

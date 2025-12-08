@@ -3,11 +3,11 @@
 
 import { useVueFlow, type ViewportTransform } from "@vue-flow/core";
 import { ref } from "vue";
-import { useLayout } from "./useLayout";
+import { useLayoutData } from "./useLayoutData";
 
 export function useViewportPan() {
   const { viewport, setViewport } = useVueFlow()
-  const { setViewportState } = useLayout()
+  const { setViewportState } = useLayoutData()
   const isPanning = ref(false)
   let last = { x: 0, y: 0 }
   // let currentViewportState = { ...viewport.value }

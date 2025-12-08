@@ -18,7 +18,7 @@ interface SceneState {
   buttonPositions: XYPosition[]
 }
 
-export function useLayout() {
+export function useLayoutData() {
 
   const { setState, getState } = useVsCode()
   
