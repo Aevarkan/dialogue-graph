@@ -39,7 +39,12 @@ jobs:
       - name: Upload files to GitHub release
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload $GITHUB_REF_NAME packages/extension/bedrock-dialogue-node-editor.vsix
+        run: |
+          cp packages/extension/bedrock-dialogue-node-editor.vsix ./node-editor-extension-$GITHUB_REF_NAME.vsix
+          gh release upload $GITHUB_REF_NAME ./node-editor-extension-$GITHUB_REF_NAME.vsix --clobber
+          echo "### Package Information :package:" >> $GITHUB_STEP_SUMMARY
+          echo "Package size: $(du -h ./node-editor-extension-$GITHUB_REF_NAME.vsix | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "Name: node-editor-extension-$GITHUB_REF_NAME.vsix" >> $GITHUB_STEP_SUMMARY
 
       - name: Publish extension to marketplace
         run: pnpm run deploy
