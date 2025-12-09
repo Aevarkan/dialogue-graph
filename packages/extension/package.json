@@ -74,9 +74,9 @@
           "markdownDescription": "%bedrockDialogueEditor.nodeColors.desc%",
           "type": "object",
           "default": {
-            "scene": "#5f9ea0",
-            "button": "#8e6cb4",
-            "command": "#77c259"
+            "scene": "#268bb3",
+            "button": "#9b68b4",
+            "command": "#429740"
           },
           "properties": {
             "scene": {
@@ -84,21 +84,21 @@
               "title": "%bedrockDialogueEditor.nodeColors.scene.title%",
               "description": "%bedrockDialogueEditor.nodeColors.scene.desc%",
               "format": "color-hex",
-              "default": "#5f9ea0"
+              "default": "#268bb3"
             },
             "button": {
               "type": "string",
               "title": "%bedrockDialogueEditor.nodeColors.button.title%",
               "description": "%bedrockDialogueEditor.nodeColors.button.desc%",
               "format": "color-hex",
-              "default": "#8e6cb4"
+              "default": "#9b68b4"
             },
             "command": {
               "type": "string",
               "title": "%bedrockDialogueEditor.nodeColors.command.title%",
               "description": "%bedrockDialogueEditor.nodeColors.command.desc%",
               "format": "color-hex",
-              "default": "#77c259"
+              "default": "#429740"
             }
           },
           "required": ["scene", "button", "command"],
