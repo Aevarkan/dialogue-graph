@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - made node colours configurable via `nodeColors` setting
 - made node editor use VS Code editor theme colours
 
+### Fixed
+
+- arrange children button now saves state correctly on first press
+
 ## [0.2.0] 2025-12-08
 
 ### Added

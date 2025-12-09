@@ -335,6 +335,13 @@ function canAddNewScene(): boolean {
 
 // GROUP AROUND SCENE BUTTON
 function groupNodesAroundScene(sceneId: string) {
+  // We don't question how or why this works
+  // Not having this means you have to press the button two times for the positions to save
+  setTimeout(doubleDouble, 1, sceneId)
+  setTimeout(doubleDouble, 2, sceneId)
+}
+
+function doubleDouble(sceneId: string) {
   const scene = getScene(sceneId)
   const sceneNode = findNode(sceneId)
   if (!scene || !sceneNode) return
