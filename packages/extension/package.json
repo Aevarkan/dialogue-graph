@@ -68,6 +68,41 @@
             "%bedrockDialogueEditor.editorOpenLocation.beside.desc%"
           ],
           "default": "beside"
+        },
+        "bedrockDialogueEditor.nodeColors": {
+          "title": "%bedrockDialogueEditor.nodeColors.title%",
+          "markdownDescription": "%bedrockDialogueEditor.nodeColors.desc%",
+          "type": "object",
+          "default": {
+            "scene": "#5f9ea0",
+            "button": "#8e6cb4",
+            "command": "#77c259"
+          },
+          "properties": {
+            "scene": {
+              "type": "string",
+              "title": "%bedrockDialogueEditor.nodeColors.scene.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.scene.desc%",
+              "format": "color-hex",
+              "default": "#5f9ea0"
+            },
+            "button": {
+              "type": "string",
+              "title": "%bedrockDialogueEditor.nodeColors.button.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.button.desc%",
+              "format": "color-hex",
+              "default": "#8e6cb4"
+            },
+            "command": {
+              "type": "string",
+              "title": "%bedrockDialogueEditor.nodeColors.command.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.command.desc%",
+              "format": "color-hex",
+              "default": "#77c259"
+            }
+          },
+          "required": ["scene", "button", "command"],
+          "additionalProperties": false
         }
       }
     },

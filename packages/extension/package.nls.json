@@ -19,5 +19,14 @@
   "bedrockDialogueEditor.editorOpenLocation.beside.desc": "The dialogue editor opens in the view column *next* to the active one.",
 
 
-  "bedrockDialogueEditor.nodeEditor.displayName": "Dialogue Node Editor"
+  "bedrockDialogueEditor.nodeEditor.displayName": "Dialogue Node Editor",
+
+  "bedrockDialogueEditor.nodeColors.title": "Editor Node Colours",
+  "bedrockDialogueEditor.nodeColors.desc": "Colour codes for nodes in the visual editor.",
+  "bedrockDialogueEditor.nodeColors.scene.title": "Scene",
+  "bedrockDialogueEditor.nodeColors.scene.desc": "The scene node's colour.",
+  "bedrockDialogueEditor.nodeColors.button.title": "Button",
+  "bedrockDialogueEditor.nodeColors.button.desc": "The button node's colour.",
+  "bedrockDialogueEditor.nodeColors.command.title": "Command",
+  "bedrockDialogueEditor.nodeColors.command.desc": "The command node's colour."
 }
