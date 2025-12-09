@@ -74,10 +74,61 @@
           "markdownDescription": "%bedrockDialogueEditor.nodeColors.desc%",
           "type": "object",
           "default": {
-            "scene": "#5f9ea0",
-            "button": "#8e6cb4",
-            "command": "#77c259"
+            "scene": "#3291B6",
+            "button": "#BB8ED0",
+            "command": "#63A361"
           },
+          "properties": {
+            "scene": {
+              "type": "string",
+              "enum": ["#AA2B1D", "#FFC50F", "#63A361", "#3291B6", "#BB8ED0"],
+              "markdownEnumDescriptions": [
+                "%bedrockDialogueEditor.nodeColors.red%",
+                "%bedrockDialogueEditor.nodeColors.yellow%",
+                "%bedrockDialogueEditor.nodeColors.green%",
+                "%bedrockDialogueEditor.nodeColors.blue%",
+                "%bedrockDialogueEditor.nodeColors.purple%"
+              ],
+              "title": "%bedrockDialogueEditor.nodeColors.scene.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.scene.desc%",
+              "default": "#3291B6"
+            },
+            "button": {
+              "type": "string",
+              "enum": ["#AA2B1D", "#FFC50F", "#63A361", "#3291B6", "#BB8ED0"],
+              "markdownEnumDescriptions": [
+                "%bedrockDialogueEditor.nodeColors.red%",
+                "%bedrockDialogueEditor.nodeColors.yellow%",
+                "%bedrockDialogueEditor.nodeColors.green%",
+                "%bedrockDialogueEditor.nodeColors.blue%",
+                "%bedrockDialogueEditor.nodeColors.purple%"
+              ],
+              "title": "%bedrockDialogueEditor.nodeColors.button.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.button.desc%",
+              "default": "#BB8ED0"
+            },
+            "command": {
+              "type": "string",
+              "enum": ["#AA2B1D", "#FFC50F", "#63A361", "#3291B6", "#BB8ED0"],
+              "markdownEnumDescriptions": [
+                "%bedrockDialogueEditor.nodeColors.red%",
+                "%bedrockDialogueEditor.nodeColors.yellow%",
+                "%bedrockDialogueEditor.nodeColors.green%",
+                "%bedrockDialogueEditor.nodeColors.blue%",
+                "%bedrockDialogueEditor.nodeColors.purple%"
+              ],
+              "title": "%bedrockDialogueEditor.nodeColors.command.title%",
+              "description": "%bedrockDialogueEditor.nodeColors.command.desc%",
+              "default": "#63A361"
+            }
+          },
+          "required": ["scene", "button", "command"],
+          "additionalProperties": false
+        },
+        "bedrockDialogueEditor.nodeColorsHex": {
+          "title": "%bedrockDialogueEditor.nodeColors.title%",
+          "markdownDescription": "%bedrockDialogueEditor.nodeColors.desc%",
+          "type": "object",
           "properties": {
             "scene": {
               "type": "string",
@@ -101,7 +152,6 @@
               "default": "#77c259"
             }
           },
-          "required": ["scene", "button", "command"],
           "additionalProperties": false
         }
       }
