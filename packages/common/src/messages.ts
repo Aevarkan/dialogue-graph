@@ -50,4 +50,17 @@ export interface ConfigMessage {
    * Colour code for command nodes.
    */
   commandNodeColour: string,
+  /**
+   * Dark colour code for scene nodes.
+   */
+  sceneNodeDarkColour: string,
+  /**
+   * Dark colour code for button slot nodes.
+   */
+  buttonSlotNodeDarkColour: string,
+  /**
+   * Dark colour code for command nodes.
+   */
+  commandNodeDarkColour: string,
+  currentColourThemeKind: "light" | "dark"
 }
