@@ -38,5 +38,8 @@
   "bedrockDialogueEditor.nodeColors.commandDark.desc": "The command node's dark theme colour.",
 
   "bedrockDialogueEditor.fileFormatVersion.title": "File Format Version",
-  "bedrockDialogueEditor.fileFormatVersion.desc": "The dialogue file's `format_version` property. It is not recommended that you change this."
+  "bedrockDialogueEditor.fileFormatVersion.desc": "The dialogue file's `format_version` property. It is not recommended that you change this.",
+
+  "bedrockDialogueEditor.editDelay.title": "Edit Delay",
+  "bedrockDialogueEditor.editDelay.desc": "The time in milliseconds that updates from the custom editor should wait before applying to the underlying JSON file."
 }

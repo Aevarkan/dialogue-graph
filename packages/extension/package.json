@@ -133,6 +133,13 @@
           "markdownDescription": "%bedrockDialogueEditor.fileFormatVersion.desc%",
           "type": "string",
           "default": "1.14.0"
+        },
+        "bedrockDialogueEditor.editDelay": {
+          "title": "%bedrockDialogueEditor.editDelay.title%",
+          "markdownDescription": "%bedrockDialogueEditor.editDelay.desc%",
+          "type": "number",
+          "minimum": 0,
+          "default": 5000
         }
       }
     },

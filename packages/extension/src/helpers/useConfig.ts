@@ -11,5 +11,10 @@ export function useConfig() {
     return formatVersion
   }
 
-  return { getFormatVersion }
+  function getEditDelay() {
+    const formatVersion = workspace.getConfiguration(EXTENSION_NAME).get<number>("editDelay") ?? 5000
+    return formatVersion
+  }
+
+  return { getFormatVersion, getEditDelay }
 }
