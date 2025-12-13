@@ -26,5 +26,5 @@ export interface SceneData {
  */
 export interface ButtonData {
   name: string
-  commands: string[]
+  commands?: string[]
 }

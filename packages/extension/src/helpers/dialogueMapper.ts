@@ -20,7 +20,7 @@ function fromSceneData(rawScene: SceneData): Scene {
 function fromButtonData(rawButton: ButtonData): Button {
   const parsedButton: Button = {
     displayName: rawButton.name,
-    commands: rawButton.commands
+    commands: rawButton.commands ?? []
   }
   return parsedButton
 }

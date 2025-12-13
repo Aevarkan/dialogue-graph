@@ -50,7 +50,7 @@
                       }
                     }
                   },
-                  "required": ["name", "commands"]
+                  "required": ["name"]
                 }
               }
             },
