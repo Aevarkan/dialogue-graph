@@ -3,7 +3,7 @@
 
 import { GenericSceneMessage, Scene } from "@workspace/common"
 import deepEqual from "fast-deep-equal"
-import { DialogueStoreDeleteMessage, DialogueStoreGenericMessage, StoreUpdateSource } from "../storeMessages"
+import { DialogueStoreDeleteMessage, DialogueStoreGenericMessage, StoreSceneUpdateInfo, StoreUpdateSource } from "../storeMessages"
 import { Disposable } from "vscode"
 
 export class DialogueStore {
@@ -196,4 +196,96 @@ export class DialogueStore {
     return createSceneMessages
   }
 
+}
+
+/**
+ * Compares the changes between two scenes.
+ * @param oldScene 
+ * @param newScene 
+ * @returns 
+ */
+function compareScenes(oldScene: Scene, newScene: Scene): StoreSceneUpdateInfo {
+  
+  // to not have to repeat it
+  const majorChange: StoreSceneUpdateInfo = { size: "major" }
+  const noChange: StoreSceneUpdateInfo = { size: "none" }
+  const changes: string[] = []
+
+  if (oldScene.sceneId !== newScene.sceneId) {
+    return majorChange
+  }
+
+  if (oldScene.npcName !== newScene.npcName) {
+    changes.push("npcName")
+  }
+
+  if (oldScene.sceneText !== newScene.sceneText) {
+    const oldSceneArray = oldScene.sceneText.split("\n")
+    const newSceneArray = newScene.sceneText.split("\n")
+    if (oldSceneArray.length !== newSceneArray.length) {
+      return majorChange
+    } else {
+    // check for changes on EACH line
+      oldSceneArray.forEach((line, index) => {
+        if (line !== newSceneArray[index]) {
+          changes.push(`sceneText.${index}`)
+        }
+      })
+    }
+  }
+
+  // compare close commands
+  if (oldScene.closeCommands.length !== newScene.closeCommands.length) {
+    return majorChange
+  }
+  oldScene.closeCommands.forEach((line, index) => {
+    if (line !== newScene.closeCommands[index]) {
+      changes.push(`closeCommands.${index}`)
+    }
+  })
+  // open commands
+  if (oldScene.openCommands.length !== newScene.openCommands.length) {
+    return majorChange
+  }
+  oldScene.openCommands.forEach((line, index) => {
+    if (line !== newScene.openCommands[index]) {
+      changes.push(`openCommands.${index}`)
+    }
+  })
+
+  // that just leaves the buttons
+  if (oldScene.buttons.length !== newScene.buttons.length) {
+    return majorChange
+  }
+
+  oldScene.buttons.forEach((button, index) => {
+    const newSceneButton = newScene.buttons[index]
+
+    if (button.commands.length !== newSceneButton.commands.length) {
+      return majorChange
+    }
+
+    if (button.displayName !== newSceneButton.displayName) {
+      changes.push(`button.${index}.displayName`)
+    }
+
+    // we've verified that there are the same amount of buttons
+    button.commands.forEach((line, commandIndex) => {
+      if (line !== newSceneButton.commands[commandIndex]) {
+        changes.push(`button.${index}.commands.${commandIndex}`)
+      }
+    })
+
+  })
+
+  // major change if more than one specific change
+  if (changes.length > 1) {
+    return majorChange
+  // minor change ONLY if there was ONE change
+  } else if (changes.length == 1) {
+    const sceneChangeId = `${newScene.sceneId}.${changes[0]}`
+    return { size: "minor", changeId: sceneChangeId }
+  }
+
+  return noChange
 }
