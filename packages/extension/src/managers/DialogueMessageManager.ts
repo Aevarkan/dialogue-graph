@@ -10,7 +10,9 @@ import { DeleteSceneMessage, GenericSceneMessage, GenericMessage, ConfigMessage 
 import { DialogueDocument, DialogueFileFormatSettings } from "../wrappers/DialogueDocument"
 import { DIALOGUE_FILE_FORMAT_VERSION } from "../constants"
 import { MessageQueue } from "../classes/MessageQueue"
-import { NodeColorsObject } from "../types"
+import { useConfigMessage } from "../helpers/configMessage"
+
+const { createCurrentConfigMessage } = useConfigMessage()
 
 class DialogueMessageManager {
 
@@ -76,15 +78,8 @@ class DialogueMessageManager {
           messageQueue.enqueueMessage(refreshMessage)
         }
 
-        // NOTE: This MUST be put into a helper function IF this same piece of code is repeated
-        const colours = workspace.getConfiguration("bedrockDialogueEditor").get<NodeColorsObject>("nodeColors")
-        const configColoursMessage: ConfigMessage = {
-          messageType: "config",
-          sceneNodeColour: colours?.scene ?? "#5f9ea0",
-          buttonSlotNodeColour: colours?.button ?? "#8e6cb4",
-          commandNodeColour: colours?.command ?? "#77c259"
-        }
-        messageQueue.enqueueMessage(configColoursMessage)
+        const configMessage = createCurrentConfigMessage()
+        messageQueue.enqueueMessage(configMessage)
 
         messageQueue.setReady(true)
       } else if (webviewMessage.messageType === "createScene" || webviewMessage.messageType === "updateScene") {
@@ -196,14 +191,7 @@ class DialogueMessageManager {
     const configListener = workspace.onDidChangeConfiguration((event) => {
       const configChange = event.affectsConfiguration("bedrockDialogueEditor.nodeColors")
       if (configChange) {
-        // NOTE: This MUST be put into a helper function IF this same piece of code is repeated
-        const colours = workspace.getConfiguration("bedrockDialogueEditor").get<NodeColorsObject>("nodeColors")
-        const configColoursMessage: ConfigMessage = {
-          messageType: "config",
-          sceneNodeColour: colours?.scene ?? "#5f9ea0",
-          buttonSlotNodeColour: colours?.button ?? "#8e6cb4",
-          commandNodeColour: colours?.command ?? "#77c259"
-        }
+        const configColoursMessage = createCurrentConfigMessage()
         messageQueue.enqueueMessage(configColoursMessage)
       }
     })

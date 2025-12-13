@@ -4,5 +4,8 @@
 export interface NodeColorsObject {
   scene: string,
   button: string,
-  command: string
+  command: string,
+  sceneDark: string,
+  buttonDark: string,
+  commandDark: string
 }
