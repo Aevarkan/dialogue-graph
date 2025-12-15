@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueFlow, useVueFlow, type GraphNode } from '@vue-flow/core'
+import { VueFlow, useGetPointerPosition, useVueFlow, type GraphNode, type XYPosition } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useDialogueData } from '@/composables/dialogueData.js'
 import { useVsCode } from '@/composables/vscodeMessages'
@@ -28,7 +28,8 @@ const { arrangeAroundScene } = useNodeLayout()
 const colours = useTheme()
 const { dockScene, onDockScene, undockScene, onUndockScene, isSceneDocked, dockedSceneIds, deleteScene: deleteDockedScene } = useSceneDock()
 
-const { onInit, onConnect, addEdges, addNodes, updateNodeData, removeNodes, findNode, updateNode, viewport, setCenter, onViewportChangeEnd } = useVueFlow()
+const { onInit, onConnect, addEdges, addNodes, updateNodeData, removeNodes, findNode, updateNode, viewport, setCenter, onViewportChangeEnd, dimensions } = useVueFlow()
+const toViewportCoords = useGetPointerPosition()
 
 onSceneCreate((sceneId, scene) => {
   if (isSceneDocked(sceneId)) return
@@ -82,7 +83,8 @@ onSceneUpdate((sceneId, scene) => {
 function handleCommandSlotUpdate(update: Exclude<DataChangeCategory, "deleted">, command: VisualSceneCommand) {
   switch (update) {
     case 'created':
-      addNodes(toCommandNode(command))
+      const viewportPosition = getCenterViewportNode()
+      addNodes(toCommandNode(command, { x: viewportPosition.x, y: viewportPosition.y }))
       const edge = makeChildEdge(command.parentSceneId, command.id)
       addEdges(edge)
       break
@@ -93,9 +95,10 @@ function handleCommandSlotUpdate(update: Exclude<DataChangeCategory, "deleted">,
 }
 
 function handleButtonSlotUpdate(update: Exclude<DataChangeCategory, "deleted">, slot: VisualSlot) {
-    switch (update) {
+  switch (update) {
     case 'created':
-      addNodes(toSlotNode(slot))
+      const viewportPosition = getCenterViewportNode()
+      addNodes(toSlotNode(slot, { x: viewportPosition.x, y: viewportPosition.y }))
       const edge = makeChildEdge(slot.parentSceneId, slot.id)
       addEdges(edge)
       break
@@ -106,20 +109,21 @@ function handleButtonSlotUpdate(update: Exclude<DataChangeCategory, "deleted">, 
 }
 
 function addNewScene(newScene: LogicalScene) {
-  const sceneNodePosition = getNodePosition(newScene.sceneId, { nodeType: "scene" }) ?? { x: 0, y: 0 }
+  const viewportPosition = getCenterViewportNode()
+  const sceneNodePosition = getNodePosition(newScene.sceneId, { nodeType: "scene" }) ?? { x: viewportPosition.x, y: viewportPosition.y }
   const positions = arrangeAroundScene(newScene, sceneNodePosition)
   const sceneNode = toSceneNode(newScene.getVisualScene(), sceneNodePosition)
   addNodes(sceneNode)
 
   newScene.getSlots().forEach((slot) => {
-    const slotNodePosition = getNodePosition(newScene.sceneId, { nodeType: "button", slot: slot.index}) ?? positions[slot.id]
+    const slotNodePosition = getNodePosition(newScene.sceneId, { nodeType: "button", slot: slot.index}) ?? positions[slot.id] ?? { x: viewportPosition.x, y: viewportPosition.y } // perhaps a bit long, this line is
     const slotNode = toSlotNode(slot, slotNodePosition)
     addNodes(slotNode)
     const slotEdge = makeChildEdge(newScene.sceneId, slot.id)
     addEdges(slotEdge)
   })
   newScene.getCommands().forEach(cmd => {
-    const commandNodePosition = getNodePosition(newScene.sceneId, { nodeType: "command", slot: cmd.type}) ?? positions[cmd.id]
+    const commandNodePosition = getNodePosition(newScene.sceneId, { nodeType: "command", slot: cmd.type}) ?? positions[cmd.id] ?? { x: viewportPosition.x, y: viewportPosition.y } // perhaps a bit long, this line is
     const commandNode = toCommandNode(cmd, commandNodePosition)
     addNodes(commandNode)
     const commandEdge = makeChildEdge(newScene.sceneId, cmd.id)
@@ -249,14 +253,14 @@ function handleAddSceneSlot(sceneId: string, slot: SceneFunctionSlot) {
   // command slot
   if (slot === "close" || slot === "open") {
     const sceneCommand = scene.setCommand(slot, [])
-    const commandNode = toCommandNode(sceneCommand)
+    const commandNode = toCommandNode(sceneCommand, getCenterViewportNode())
     addNodes(commandNode)
     addEdges(makeChildEdge(sceneId, sceneCommand.id))
   // button slot
   } else {
     const emptyButton: Button = { commands: [], displayName: "" }
     const sceneButtonSlot = scene.addSlot(emptyButton)
-    const slotNode = toSlotNode(sceneButtonSlot.newSlot)
+    const slotNode = toSlotNode(sceneButtonSlot.newSlot, getCenterViewportNode())
     addNodes(slotNode)
     addEdges(makeChildEdge(sceneId, sceneButtonSlot.newSlot.id))
     const highestIndexChange = sceneButtonSlot.highestIndexChange
@@ -406,6 +410,20 @@ function toggleSceneDock() {
 
 function toggleMiniMap() {
   showMiniMap.value = !showMiniMap.value
+}
+
+
+////////////////////////////////////////////////////////////
+///// UTILITY FUNCTIONS THAT SHOULD BE IN ANOTHER FILE /////
+////////////////////////////////////////////////////////////
+
+function getCenterViewportNode() {
+  const viewportPositionUncentered = toViewportCoords(viewport.value)
+  const centered: XYPosition = {
+    x: viewportPositionUncentered.x + dimensions.value.width / viewport.value.zoom / 2,
+    y: viewportPositionUncentered.y + dimensions.value.height / viewport.value.zoom / 2,
+  }
+  return centered
 }
 
 </script>
