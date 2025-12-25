@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- added web environment compatibility
+
 ### Changed
 
 - new nodes are now initialised at centre of viewport instead of at origin

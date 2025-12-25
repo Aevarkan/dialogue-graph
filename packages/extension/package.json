@@ -10,6 +10,7 @@
     "copy-media": "node scripts/copy-app-media-files.cjs",
     "copy-info-files": "node scripts/copy-info-files.cjs",
     "compile": "tsdown",
+    "open-in-browser": "vscode-test-web --browser=none --extensionDevelopmentPath=. .",
     "build": "pnpm run copy-media && pnpm run compile",
     "package": "pnpm run copy-info-files && vsce package -o bedrock-dialogue-node-editor.vsix",
     "deploy-marketplace": "vsce publish"
@@ -22,7 +23,8 @@
   "engines": {
     "vscode": "^1.105.0"
   },
-  "main": "./dist/extension.cjs",
+  "main": "./dist/extension.js",
+  "browser": "./dist/extension.js",
   "activationEvents": [
     "onLanguage:json"
   ],
@@ -160,6 +162,7 @@
     "add-on"
   ],
   "devDependencies": {
+    "@vscode/test-web": "^0.0.77",
     "@vscode/vsce": "^3.7.0",
     "@workspace/common": "workspace:*",
     "tsdown": "^0.16.1"

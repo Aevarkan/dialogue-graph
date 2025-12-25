@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "target": "es2022",
+    "lib": ["WebWorker", "ES6"],
+    "moduleResolution": "bundler"
+  }
+}
